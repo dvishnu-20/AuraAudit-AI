@@ -51,57 +51,18 @@ LedgerGuard AI (formerly AuraAudit) is an enterprise-grade agentic AI compliance
 LedgerGuard AI leverages CockroachDB's standard SQL and pgvector capabilities to run high-performance relational and semantic queries.
 
 ### 1. Database Schema Definitions
-The complete schema is declared in [lib/schema.sql](file:///c:/Users/duddu/Downloads/AuraAudit-AI/lib/schema.sql):
+The complete schema is declared in [lib/schema.sql]
 
 - **`vendors`**: Core registry containing vendor metadata, geographical settings, calculated risk levels, and AI compliance summaries.
-  ```sql
-  CREATE TABLE vendors (
-      id VARCHAR(50) PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      region VARCHAR(100) NOT NULL, -- e.g., 'US East', 'EU Central', 'APAC Singapore'
-      risk_level VARCHAR(50) NOT NULL DEFAULT 'medium',
-      status VARCHAR(50) NOT NULL DEFAULT 'pending',
-      ai_risk_summary TEXT,
-      recent_ledger_events INT DEFAULT 0,
-      created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
-  );
-  ```
 - **`documents`**: Tracks raw uploaded compliance text content, status, and cryptographic SHA-256 hashes of the files.
-- **`document_chunks`**: Stores section-by-section text chunks alongside unit-length embeddings for semantic searching:
-  ```sql
-  CREATE TABLE document_chunks (
-      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      document_id VARCHAR(50) NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
-      vendor_id VARCHAR(50) NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
-      chunk_index INT NOT NULL,
-      content TEXT NOT NULL,
-      embedding VECTOR(1536) NOT NULL
-  );
-  ```
+- **`document_chunks`**: Stores section-by-section text chunks alongside unit-length embeddings for semantic searching
 - **`ledger_events`**: Cryptographically chained SHA-256 ledger records representing the tamper-proof compliance chain of custody.
 - **`agent_runs`**: Stores a visual checklist trace with step-by-step metadata using the `JSONB` data type for live frontend monitoring.
 
 ### 2. Distributed HNSW Vector Indexing
-We optimize vector lookup latency by building a Hierarchical Navigable Small World (HNSW) index over the `embedding` vector using the pgvector cosine distance operator:
-```sql
-CREATE INDEX document_chunks_embedding_idx 
-ON document_chunks USING hnsw (embedding vector_cosine_ops);
-```
+We optimize vector lookup latency by building a Hierarchical Navigable Small World (HNSW) index over the `embedding` vector using the pgvector cosine distance operator
 
 When query inputs are submitted, the application matches text embeddings against the index using a Cosine Distance calculation:
-```sql
-SELECT 
-  c.content, 
-  d.name AS document_name, 
-  v.name AS vendor_name,
-  (c.embedding <=> $1) AS cosine_distance
-FROM document_chunks c
-JOIN documents d ON c.document_id = d.id
-JOIN vendors v ON d.vendor_id = v.id
-ORDER BY c.embedding <=> $1 ASC
-LIMIT 5;
-```
 
 ---
 
@@ -111,34 +72,9 @@ The multi-agent execution pipeline delegates complex audit assessments to **Clau
 
 ### 1. Bedrock Client Configuration
 The runtime service initializes command execution using the official `@aws-sdk/client-bedrock-runtime` client:
-```typescript
-import { BedrockRuntimeClient, InvokeModelCommand } from "@aws-sdk/client-bedrock-runtime";
-
-const client = new BedrockRuntimeClient({
-  region: awsRegion,
-  credentials: { accessKeyId: awsAccessKey, secretAccessKey: awsSecretKey }
-});
-```
 
 ### 2. Prompt Instruction & Structured JSON Output
 The Risk Auditing Agent passes raw document chunks to Claude 3.5 Sonnet and extracts structured data fields for programmatic updates:
-```typescript
-const prompt = `
-  You are an AI Compliance Auditor checking the following vendor compliance text:
-  "${documentsText.slice(0, 4000)}"
-
-  Verify if there are any outdated SOC2 certificates (evidence older than 12 months) or missing encryption policies.
-  Respond in JSON format:
-  {
-    "controlsChecked": number,
-    "gapsDetected": number,
-    "riskDelta": number,
-    "policyRule": "string",
-    "reasoning": "string",
-    "escalated": boolean
-  }
-`;
-```
 
 If AWS Bedrock or credentials are not configured, the system falls back to a deterministic rule-based simulation to guarantee complete UI interactivity during offline demos.
 
