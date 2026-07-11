@@ -46,6 +46,40 @@ LedgerGuard AI (formerly AuraAudit) is an enterprise-grade agentic AI compliance
 
 ---
 
+## 📊 Deep-Dive: Database Schema & Vector Search
+
+LedgerGuard AI leverages CockroachDB's standard SQL and pgvector capabilities to run high-performance relational and semantic queries.
+
+### 1. Database Schema Definitions
+The complete schema is declared in [lib/schema.sql]
+
+- **`vendors`**: Core registry containing vendor metadata, geographical settings, calculated risk levels, and AI compliance summaries.
+- **`documents`**: Tracks raw uploaded compliance text content, status, and cryptographic SHA-256 hashes of the files.
+- **`document_chunks`**: Stores section-by-section text chunks alongside unit-length embeddings for semantic searching
+- **`ledger_events`**: Cryptographically chained SHA-256 ledger records representing the tamper-proof compliance chain of custody.
+- **`agent_runs`**: Stores a visual checklist trace with step-by-step metadata using the `JSONB` data type for live frontend monitoring.
+
+### 2. Distributed HNSW Vector Indexing
+We optimize vector lookup latency by building a Hierarchical Navigable Small World (HNSW) index over the `embedding` vector using the pgvector cosine distance operator
+
+When query inputs are submitted, the application matches text embeddings against the index using a Cosine Distance calculation:
+
+---
+
+## 🤖 Deep-Dive: AWS Bedrock & Claude 3.5 Sonnet Agent
+
+The multi-agent execution pipeline delegates complex audit assessments to **Claude 3.5 Sonnet** hosted on Amazon Bedrock.
+
+### 1. Bedrock Client Configuration
+The runtime service initializes command execution using the official `@aws-sdk/client-bedrock-runtime` client:
+
+### 2. Prompt Instruction & Structured JSON Output
+The Risk Auditing Agent passes raw document chunks to Claude 3.5 Sonnet and extracts structured data fields for programmatic updates:
+
+If AWS Bedrock or credentials are not configured, the system falls back to a deterministic rule-based simulation to guarantee complete UI interactivity during offline demos.
+
+---
+
 ## 🛠️ Getting Started
 
 ### Prerequisites
