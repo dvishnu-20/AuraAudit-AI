@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/auth-context";
 
 export default function SignupPage() {
   const [loading, setLoading] = useState(false);
+  const [oauthMsg, setOauthMsg] = useState("");
   const { signup } = useAuth();
   const router = useRouter();
 
@@ -29,14 +30,15 @@ export default function SignupPage() {
       <h1 className="text-2xl font-bold text-white mb-1">Create your workspace</h1>
       <p className="text-sm text-slate-500 mb-8">Enterprise compliance infrastructure for global vendor risk.</p>
 
-      <div className="space-y-2 mb-6">
+      <div className="space-y-2 mb-4">
         {["Continue with Google", "Continue with Microsoft"].map((label) => (
-          <button key={label} className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg bg-white/5 border border-white/8 text-slate-300 hover:bg-white/8 text-sm font-medium transition-all">
+          <button key={label} onClick={() => setOauthMsg("SSO & OAuth available on Enterprise plan — sign up with email below")} className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg bg-white/5 border border-white/8 text-slate-300 hover:bg-white/8 text-sm font-medium transition-all">
             <span className="w-5 h-5 rounded bg-white/10 text-xs flex items-center justify-center">{label.includes("Google") ? "G" : "M"}</span>
             {label}
           </button>
         ))}
       </div>
+      {oauthMsg && <p className="text-xs text-amber-400 text-center mb-4 px-2">{oauthMsg}</p>}
 
       <div className="flex items-center gap-3 mb-6">
         <div className="flex-1 h-px bg-white/8" />

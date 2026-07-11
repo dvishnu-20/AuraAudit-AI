@@ -36,7 +36,7 @@ const demoSteps = [
     id: 5, label: "Ledger Event Created", icon: BookOpen, color: "emerald",
     content: {
       title: "Immutable ledger event committed",
-      body: "Event EVT-001 written to Aurora DSQL. Hash: a3f9d2...c8e1b4. Committed to US East, EU Central, APAC Singapore simultaneously. Strong consistency verified.",
+      body: "Event EVT-001 written to CockroachDB. Hash: a3f9d2...c8e1b4. Committed to US East, EU Central, APAC Singapore simultaneously. Strong consistency verified.",
     },
   },
   {
@@ -133,7 +133,7 @@ export default function DemoPage() {
                   <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
                     <div className="flex items-center gap-2 mb-2">
                       <CheckCircle className="w-4 h-4 text-emerald-400" />
-                      <span className="text-xs font-medium text-emerald-400">Aurora DSQL — Commit Confirmed</span>
+                      <span className="text-xs font-medium text-emerald-400">CockroachDB — Commit Confirmed</span>
                     </div>
                     <div className="space-y-1">
                       {["US East · 18ms", "EU Central · 24ms", "APAC Singapore · 31ms"].map((r) => (

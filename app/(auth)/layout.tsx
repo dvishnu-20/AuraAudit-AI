@@ -74,7 +74,7 @@ function AuthRightPanel() {
 
         {/* Trust badges */}
         <div className="flex flex-wrap gap-2">
-          {["SOC2", "ISO27001", "GDPR", "HIPAA", "Aurora DSQL"].map((b) => (
+          {["SOC2", "ISO27001", "GDPR", "HIPAA", "CockroachDB"].map((b) => (
             <span key={b} className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/8 text-xs text-slate-400">{b}</span>
           ))}
         </div>

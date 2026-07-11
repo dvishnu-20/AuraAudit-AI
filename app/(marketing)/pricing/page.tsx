@@ -28,7 +28,7 @@ const plans = [
     features: [
       "Unlimited vendors",
       "Multi-region compliance",
-      "Aurora DSQL ledger",
+      "CockroachDB ledger",
       "Advanced risk telemetry",
       "Human review workflows",
       "SOC2, ISO27001, GDPR, HIPAA",
@@ -115,7 +115,7 @@ export default function PricingPage() {
 
         <div className="mt-16 text-center p-8 rounded-2xl border border-white/8 bg-[#0d1117]">
           <p className="text-sm text-slate-400">All plans include SOC2-ready infrastructure, immutable audit trails, and human-reviewable AI decisions.</p>
-          <p className="text-xs text-slate-600 mt-2">Powered by Amazon Aurora DSQL · Active-active multi-region · GDPR + HIPAA compliant architecture</p>
+          <p className="text-xs text-slate-600 mt-2">Powered by CockroachDB · Active-active multi-region · GDPR + HIPAA compliant architecture</p>
         </div>
       </div>
     </>

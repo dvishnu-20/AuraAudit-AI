@@ -67,10 +67,13 @@ export function UploadZone({ onFileReady }: UploadZoneProps) {
           <p className="text-sm font-medium text-slate-300">Drop compliance documents here</p>
           <p className="text-xs text-slate-500 mt-1">PDF · DOCX · XLSX · CSV · SOC2 · ISO27001 · DPA · Contract</p>
         </div>
-        <button className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium transition-all">
+        <button
+          onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }}
+          className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium transition-all"
+        >
           Browse Files
         </button>
-        <input ref={inputRef} type="file" className="hidden" onChange={handleInput} accept=".pdf,.docx,.xlsx,.csv" />
+        <input ref={inputRef} type="file" className="hidden" onChange={handleInput} accept=".pdf,.docx,.xlsx,.csv,.txt" multiple />
       </div>
 
       {files.length > 0 && (

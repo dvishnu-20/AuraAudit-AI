@@ -10,7 +10,7 @@ const steps = [
   { label: "Checking regional policies", detail: "US East policy engine v3.2.0 validated." },
   { label: "Computing risk delta", detail: "Risk increased from 60 → 78 (+18 points)." },
   { label: "Preparing ledger entry", detail: "Event hash: a3f9d2...c8e1b4" },
-  { label: "Writing to Aurora DSQL", detail: "Committed to all 3 regions. Strongly consistent." },
+  { label: "Writing to CockroachDB", detail: "Committed to all 3 regions. Strongly consistent." },
 ];
 
 interface AgentAuditModalProps {

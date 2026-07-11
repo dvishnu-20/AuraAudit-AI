@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { mockReports } from "@/lib/mock-data";
 import { BarChart3, Download, RefreshCw, FileText, CheckCircle, Loader2 } from "lucide-react";
 import { formatDateTime } from "@/lib/utils";
@@ -12,10 +12,39 @@ const formatBadge = (f: string) => {
 export default function ReportsPage() {
   const [generating, setGenerating] = useState<string | null>(null);
   const [generated, setGenerated] = useState<Set<string>>(new Set());
+  const [customGenerating, setCustomGenerating] = useState(false);
+  const regionRef = useRef<HTMLSelectElement>(null);
+  const tierRef = useRef<HTMLSelectElement>(null);
+  const frameworkRef = useRef<HTMLSelectElement>(null);
 
   const handleGenerate = (id: string) => {
     setGenerating(id);
     setTimeout(() => { setGenerating(null); setGenerated((g) => new Set(g).add(id)); }, 2000);
+  };
+
+  const handleCustomReport = () => {
+    setCustomGenerating(true);
+    setTimeout(() => {
+      setCustomGenerating(false);
+      const report = {
+        generated_at: new Date().toISOString(),
+        region: regionRef.current?.value || "All Regions",
+        vendor_tier: tierRef.current?.value || "All Tiers",
+        framework: frameworkRef.current?.value || "All Frameworks",
+        events: 142,
+        vendors: 8,
+        risk_summary: { critical: 1, high: 3, medium: 4, low: 0 },
+        ledger_events: 9481204,
+        cockroach_node: "us-east1.cockroachlabs.cloud",
+      };
+      const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `custom-compliance-report-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }, 1800);
   };
 
   return (
@@ -68,10 +97,10 @@ export default function ReportsPage() {
               { label: "Region", options: ["All Regions", "US East", "EU Central", "APAC Singapore"] },
               { label: "Vendor Tier", options: ["All Tiers", "Tier 1", "Tier 2", "Tier 3"] },
               { label: "Framework", options: ["All Frameworks", "SOC2", "ISO27001", "GDPR", "HIPAA"] },
-            ].map(({ label, options }) => (
+            ].map(({ label, options }, i) => (
               <div key={label}>
                 <label className="text-xs text-slate-500 block mb-1">{label}</label>
-                <select className="w-full px-3 py-2 text-sm bg-white/5 border border-white/8 rounded-lg text-slate-300 focus:outline-none focus:border-blue-500/50 transition-all">
+                <select ref={i === 0 ? regionRef : i === 1 ? tierRef : frameworkRef} className="w-full px-3 py-2 text-sm bg-white/5 border border-white/8 rounded-lg text-slate-300 focus:outline-none focus:border-blue-500/50 transition-all">
                   {options.map((o) => <option key={o} className="bg-slate-900">{o}</option>)}
                 </select>
               </div>
@@ -95,9 +124,8 @@ export default function ReportsPage() {
                 </div>
               </div>
             ))}
-            <button className="w-full py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium hover:from-blue-500 hover:to-violet-500 transition-all mt-2">
-              <Download className="w-3.5 h-3.5 inline mr-2" />
-              Generate Custom Report
+            <button onClick={handleCustomReport} disabled={customGenerating} className="w-full py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-violet-600 text-white text-sm font-medium hover:from-blue-500 hover:to-violet-500 transition-all mt-2 flex items-center justify-center gap-2 disabled:opacity-60">
+              {customGenerating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" />Generating…</> : <><Download className="w-3.5 h-3.5" />Generate Custom Report</>}
             </button>
           </div>
         </div>

@@ -35,7 +35,7 @@ const securityFeatures = [
   {
     icon: Archive,
     title: "Audit log retention",
-    desc: "Configurable retention policies (7 years for financial, 5 years for general). Aurora DSQL append-only prevents deletion.",
+    desc: "Configurable retention policies (7 years for financial, 5 years for general). CockroachDB append-only ledger prevents deletion.",
     color: "green",
   },
   {

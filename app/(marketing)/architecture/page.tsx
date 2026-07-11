@@ -6,13 +6,13 @@ import { Shield, Cpu, Database, Globe, BarChart3, Bot, FileText, ChevronRight } 
 const layers = [
   { id: "frontend", label: "Frontend Layer", color: "blue", items: ["Next.js App Router", "React + TypeScript", "Tailwind CSS + shadcn/ui", "Recharts + Framer Motion", "Deployed on Vercel"] },
   { id: "ai", label: "AI Agent Layer", color: "violet", items: ["Document Parser Agent", "Control Mapping Agent", "Risk Scoring Agent", "Regional Policy Validator", "Ledger Writer Agent", "Human Escalation Agent"] },
-  { id: "data", label: "Data Layer", color: "cyan", items: ["Amazon Aurora DSQL", "Active-active multi-region", "Strongly consistent SQL", "Vendor registry", "Compliance schemas"] },
+  { id: "data", label: "Data Layer", color: "cyan", items: ["CockroachDB", "Active-active multi-region", "Strongly consistent SQL", "Vendor registry", "Compliance schemas"] },
   { id: "audit", label: "Audit Layer", color: "emerald", items: ["Append-only ledger events", "Cryptographic hashing", "Event sequence numbers", "Region commit tracking", "Integrity verification"] },
   { id: "reporting", label: "Reporting Layer", color: "amber", items: ["Compliance report builder", "SOC2 gap reports", "GDPR cross-border reports", "Audit trail exports", "Executive summaries"] },
   { id: "regions", label: "Region Layer", color: "red", items: ["US East (Primary)", "EU Central (Active)", "APAC Singapore (Active)", "Global policy engine", "Cross-region consistency"] },
 ];
 
-const pipeline = ["User Upload", "Document Parser", "Control Mapper", "Risk Engine", "Policy Validator", "Ledger Writer", "Aurora DSQL", "Report Generator"];
+const pipeline = ["User Upload", "Document Parser", "Control Mapper", "Risk Engine", "Policy Validator", "Ledger Writer", "CockroachDB", "Report Generator"];
 
 const scales = [100, 1000, 10000, 1000000];
 const scaleLabels = ["100 vendors", "1K vendors", "10K vendors", "1M vendors"];
@@ -56,7 +56,7 @@ export default function ArchitecturePage() {
         {/* Header */}
         <div className="text-center">
           <h1 className="text-4xl font-bold text-white mb-4">Technical Architecture</h1>
-          <p className="text-slate-500 max-w-2xl mx-auto">A full-stack AI compliance platform built on globally distributed infrastructure with Aurora DSQL at its core.</p>
+          <p className="text-slate-500 max-w-2xl mx-auto">A full-stack AI compliance platform built on globally distributed infrastructure with CockroachDB at its core.</p>
         </div>
 
         {/* Architecture layers */}
@@ -177,7 +177,7 @@ export default function ArchitecturePage() {
               </div>
               <div className="space-y-2">
                 {[
-                  `At this scale, LedgerGuard AI uses Aurora DSQL to coordinate globally consistent writes across ${regions.length || 1} active region${regions.length !== 1 ? "s" : ""}.`,
+                  `At this scale, LedgerGuard AI uses CockroachDB to coordinate globally consistent writes across ${regions.length || 1} active region${regions.length !== 1 ? "s" : ""}.`,
                   "The immutable audit ledger prevents regional drift in compliance decisions.",
                   humanApproval ? "Human approval is enabled — critical risk decisions require sign-off before ledger write." : "Human approval is disabled — all AI decisions are written directly to ledger.",
                   continuousMonitoring ? "Continuous monitoring is active — all vendors are checked in real time." : "Monitoring is periodic — risk signals are batched.",

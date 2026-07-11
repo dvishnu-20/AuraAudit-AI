@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛡️ LedgerGuard AI (AuraAudit)
+### Global Distributed Compliance Ledger & Agentic Risk Auditor
+*Built for the CockroachDB × AWS Hackathon 2026*
 
-## Getting Started
+LedgerGuard AI (formerly AuraAudit) is an enterprise-grade agentic AI compliance platform that transforms unstructured compliance documents into queryable, auditable, and immutable risk profiles. Backed by **CockroachDB's** distributed transaction consistency and pgvector semantic capabilities, and executed via **Amazon Bedrock (Claude 3.5 Sonnet)** on AWS.
 
-First, run the development server:
+---
 
+## 🚀 Key Platform Features
+
+1. **🤖 Multi-Agent Compliance Pipeline**:
+   - **Document Parser Agent**: Extracts assertions from complex BAAs, SOC2s, and DPAs.
+   - **Control Mapping Agent**: Resolves text assertions against corporate compliance frameworks (SOC2, ISO27001, GDPR, HIPAA) using Bedrock semantic analysis.
+   - **Risk Scoring Agent**: Evaluates risk delta and updates vendor tiers.
+   - **Ledger Writer Agent**: Writes cryptographically chained SHA-256 blocks to CockroachDB.
+
+2. **🔗 Cryptographically Chained Ledger**:
+   - Every compliance decision and agent action is recorded as an immutable ledger event.
+   - Events are linked using SHA-256 hashes, forming a tamper-proof chain of custody stored in CockroachDB.
+
+3. **🌍 Active-Active Multi-Region Replication**:
+   - Strongly consistent topology spanning US East, EU Central, and APAC Singapore.
+   - Low-latency access and local data residency policy compliance (e.g. GDPR controls in EU, MAS controls in APAC).
+
+4. **⚡ Complete Application Interactivity**:
+   - **Add Vendor Modal**: Interactive form allowing creation of vendor profiles, compliance tiers, and required frameworks.
+   - **Document Upload Zone**: Drop compliance files to trigger parsing with live upload progress animations.
+   - **Start Agent Run Modal**: Spin up real-time audit pipelines on specific vendors.
+   - **Inline Step Trace**: Table expanders to monitor live agent execution steps.
+   - **Search Command Palette (⌘K)**: Quick global search for app navigation and registry lookup.
+   - **Notification Center**: Dropdown dashboard alerting teams of risk changes, transaction logs, and pipeline completions.
+   - **Report Builder**: Select regions, frameworks, and date ranges to generate a custom JSON/PDF report package.
+
+---
+
+## 🏆 Hackathon Alignment & Technology Stack
+
+### CockroachDB Features Utilized
+- **Distributed Vector Indexing (pgvector)**: Leverages `document_chunks.embedding VECTOR(1536)` with an HNSW index to run similarity searches across policy clauses.
+- **Strong Global Consistency**: Implements multi-region schema validation to verify multi-region write latency and zero replication lag.
+- **Managed MCP Server**: Direct AI assistant interaction with database resources via CockroachDB Managed Model Context Protocol.
+
+### AWS Features Utilized
+- **Amazon Bedrock**: Powering the cognitive agent logic with high-throughput Claude 3.5 Sonnet invocations.
+- **AWS Region Optimization**: Multi-region architecture syncing across AWS deployment zones.
+
+---
+
+## 🛠️ Getting Started
+
+### Prerequisites
+- Node.js 18.0 or later
+- A [CockroachDB Cloud](https://cockroachlabs.cloud/) cluster (Free-tier or Serverless)
+- An AWS IAM User credentials with Amazon Bedrock Access (e.g. `us-east-1` region)
+
+### 1. Installation
+Clone the repository and install the dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Set Up Environment Variables
+Create a `.env.local` file in the root directory:
+```bash
+cp .env.local.example .env.local
+```
+Fill in the following values:
+```ini
+# CockroachDB Connection String
+COCKROACH_DB_URL="postgresql://<user>:<pass>@<host>:26257/defaultdb?sslmode=verify-full"
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# AWS Bedrock Credentials
+AWS_ACCESS_KEY_ID="your-aws-access-key-id"
+AWS_SECRET_ACCESS_KEY="your-aws-secret-access-key"
+AWS_REGION="us-east-1"
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Initialize Database Schema
+The system auto-seeds and sets up required tables upon first API access. To initialize manually, run the schema script in your CockroachDB console:
+```bash
+# Using Cockroach SQL Shell:
+\i lib/schema.sql
+```
 
-## Learn More
+### 4. Run Locally
+Start the development server:
+```bash
+npm run dev
+```
+Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Repository Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [`/app`](./app) - Next.js App Router (Dashboard, Ledger registry, Vendor detail overlays, Onboarding flow)
+- [`/components`](./components) - Glassmorphism UI Components (Topbar notification dropdowns, search palettes, file dropzones)
+- [`/lib`](./lib) - Database pool adapters, mock data registry, and CockroachDB connector scripts
+- [`lib/schema.sql`](./lib/schema.sql) - Structured CockroachDB schemas, active-active topologies, and HNSW indexes
+- [`lib/test-db.js`](./lib/test-db.js) - Verification script for pg connection and vector search sanity check
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🤖 Demo Mode (No Database Required)
+If `COCKROACH_DB_URL` is omitted, LedgerGuard AI falls back to local simulation mode. Every single feature (forms, table rows, file generation, and settings storage) runs on local state and `localStorage` to ensure seamless offline demoing.

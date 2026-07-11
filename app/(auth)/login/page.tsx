@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [oauthMsg, setOauthMsg] = useState("");
   const { login } = useAuth();
   const router = useRouter();
 
@@ -35,18 +36,19 @@ export default function LoginPage() {
       <p className="text-sm text-slate-500 mb-8">Protected workspace access for enterprise compliance teams.</p>
 
       {/* OAuth buttons */}
-      <div className="space-y-2 mb-6">
+      <div className="space-y-2 mb-4">
         {[
           { label: "Continue with Google", icon: "G" },
           { label: "Continue with Microsoft", icon: "M" },
           { label: "Continue with SSO", icon: "⊞" },
         ].map(({ label, icon }) => (
-          <button key={label} className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg bg-white/5 border border-white/8 text-slate-300 hover:bg-white/8 hover:text-white transition-all text-sm font-medium">
+          <button key={label} onClick={() => setOauthMsg("SSO & OAuth available on Enterprise plan — use email login below")} className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg bg-white/5 border border-white/8 text-slate-300 hover:bg-white/8 hover:text-white transition-all text-sm font-medium">
             <span className="w-5 h-5 rounded flex items-center justify-center bg-white/10 text-xs">{icon}</span>
             {label}
           </button>
         ))}
       </div>
+      {oauthMsg && <p className="text-xs text-amber-400 text-center mb-4 px-2">{oauthMsg}</p>}
 
       <div className="flex items-center gap-3 mb-6">
         <div className="flex-1 h-px bg-white/8" />

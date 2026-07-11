@@ -15,6 +15,17 @@ export default function LedgerPage() {
     setTimeout(() => { setVerifying(false); setVerified(true); setTimeout(() => setVerified(false), 4000); }, 2000);
   };
 
+  const handleExport = () => {
+    const { mockLedgerEvents } = require("@/lib/mock-data");
+    const blob = new Blob([JSON.stringify(mockLedgerEvents, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `auraaudit-ledger-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -32,7 +43,7 @@ export default function LedgerPage() {
             {verifying ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : verified ? <CheckCircle className="w-3.5 h-3.5" /> : <Shield className="w-3.5 h-3.5" />}
             {verifying ? "Verifying…" : verified ? "Integrity Verified ✓" : "Verify Ledger Integrity"}
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/8 text-slate-300 hover:bg-white/8 text-sm transition-all">
+          <button onClick={handleExport} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/8 text-slate-300 hover:bg-white/8 text-sm transition-all">
             <Download className="w-3.5 h-3.5" />
             Export Audit Trail
           </button>
@@ -86,7 +97,7 @@ export default function LedgerPage() {
             </div>
           ))}
         </div>
-        <p className="text-center text-xs text-slate-600 mt-4">Active-active distributed SQL architecture · Aurora DSQL · Zero replication lag</p>
+        <p className="text-center text-xs text-slate-600 mt-4">Active-active distributed SQL architecture · CockroachDB · Zero replication lag</p>
       </div>
 
       {/* Event stream */}

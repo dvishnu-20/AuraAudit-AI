@@ -391,7 +391,7 @@ export const mockAgentRuns: AgentRun[] = [
       { step: 3, name: "Matched to internal policy", status: "completed", output: "SOC2 evidence dated Nov 2023 — 14 months old. Threshold exceeded.", duration: "22s" },
       { step: 4, name: "Detected missing encryption evidence", status: "completed", output: "Encryption-at-rest control CC6.7 has no supporting evidence artifact.", duration: "15s" },
       { step: 5, name: "Raised risk score +18", status: "completed", output: "Risk score increased from 60 to 78. Flagged for human review.", duration: "8s" },
-      { step: 6, name: "Wrote immutable audit entry", status: "completed", output: "Ledger event EVT-001 committed to Aurora DSQL. Hash: a3f9d2...c8e1b4", duration: "37s" },
+      { step: 6, name: "Wrote immutable audit entry", status: "completed", output: "Ledger event EVT-001 committed to CockroachDB. Hash: a3f9d2...c8e1b4", duration: "37s" },
     ],
   },
   {
@@ -444,7 +444,7 @@ export const mockAgentRuns: AgentRun[] = [
       { step: 2, name: "Extracted GDPR controls", status: "completed", output: "Art28 obligations, Art46 transfer mechanisms extracted.", duration: "52s" },
       { step: 3, name: "Detected subcontractor clause conflict", status: "completed", output: "Subprocessor substitution without consent violates GDR-28B.", duration: "38s" },
       { step: 4, name: "Escalated to Human Review", status: "completed", output: "Ticket HRV-0421 created. EU compliance team notified.", duration: "10s" },
-      { step: 5, name: "Wrote immutable audit entry", status: "completed", output: "Ledger event EVT-003 committed to Aurora DSQL.", duration: "25s" },
+      { step: 5, name: "Wrote immutable audit entry", status: "completed", output: "Ledger event EVT-003 committed to CockroachDB.", duration: "25s" },
     ],
   },
 ];
@@ -515,7 +515,7 @@ export const mockReports: Report[] = [
   { id: "RPT-003", name: "ISO27001 Evidence Report", description: "Full audit trail of ISO27001 certificate verifications and control mappings.", lastGenerated: "2025-01-17T11:00:00Z", format: "CSV", size: "890 KB", framework: "ISO27001" },
   { id: "RPT-004", name: "GDPR Cross-Border Processing Report", description: "Documents all GDPR data processing activities, DPA statuses, and transfer mechanisms.", lastGenerated: "2025-01-19T06:00:00Z", format: "PDF", size: "3.1 MB", framework: "GDPR" },
   { id: "RPT-005", name: "High-Risk Vendor Renewal Report", description: "Vendors requiring contract renewal within 90 days with risk scores and gap analysis.", lastGenerated: "2025-01-16T09:45:00Z", format: "CSV", size: "420 KB" },
-  { id: "RPT-006", name: "Global Audit Ledger Export", description: "Complete append-only audit trail export from Aurora DSQL with cryptographic hashes.", lastGenerated: "2025-01-19T00:00:00Z", format: "JSON", size: "48.7 MB" },
+  { id: "RPT-006", name: "Global Audit Ledger Export", description: "Complete append-only audit trail export from CockroachDB with cryptographic hashes.", lastGenerated: "2025-01-19T00:00:00Z", format: "JSON", size: "48.7 MB" },
 ];
 
 // ---- COMPLIANCE SCHEMAS --------------------------------------------

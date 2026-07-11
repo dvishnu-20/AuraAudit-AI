@@ -84,7 +84,7 @@ export function LedgerEventDrawer({ event, onClose }: LedgerEventDrawerProps) {
                 { label: "Event Hash", value: event.fullHash },
                 { label: "Document Hash", value: event.documentHash },
                 { label: "Previous Ledger Ref", value: event.prevLedgerRef },
-                { label: "Aurora DSQL Transaction", value: event.auroraTransactionId },
+                { label: "CockroachDB Transaction", value: event.auroraTransactionId },
                 { label: "Policy Rule Triggered", value: event.policyRule },
               ].map(({ label, value }) => (
                 <div key={label} className="p-3 rounded-lg bg-white/3 border border-white/5">

@@ -8,7 +8,7 @@ import { useRef } from "react";
 // Animation Variants
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number] } }
 };
 
 const staggerContainer = {
@@ -139,7 +139,7 @@ function PartnersSection() {
       <div className="max-w-7xl mx-auto px-6 text-center">
         <p className="text-base font-bold tracking-[0.3em] text-white/60 uppercase mb-12">Powered By Industry Leaders</p>
         <div className="flex flex-wrap justify-center items-center gap-x-20 gap-y-12">
-          {["Aurora DSQL", "AWS Global", "SOC2 Assure", "ISO Certify", "GDPR Cloud"].map((partner) => (
+          {["CockroachDB", "AWS Global", "SOC2 Assure", "ISO Certify", "GDPR Cloud"].map((partner) => (
             <motion.div 
               whileHover={{ scale: 1.1, color: "rgba(255,255,255,1)" }}
               key={partner} 
@@ -235,7 +235,7 @@ function KeyFeaturesSection() {
   const keys = [
     { num: "01", title: "Simplify complex workflows.", desc: "Our AI automates repetitive tasks across compliance departments, from extracting controls to scoring risk, dramatically reducing manual effort." },
     { num: "02", title: "Unlock actionable intelligence.", desc: "The platform provides deep insights, turning raw vendor documents into structured, queryable data for improved vendor selection." },
-    { num: "03", title: "Connect global regions.", desc: "Backed by Amazon Aurora DSQL, LedgerGuard maintains a strongly consistent audit trail across US, EU, and APAC seamlessly." }
+    {num: "03", title: "Connect global regions.", desc: "Backed by CockroachDB, LedgerGuard maintains a strongly consistent audit trail across US, EU, and APAC seamlessly." }
   ];
 
   return (

@@ -10,8 +10,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "LedgerGuard AI — Global Agentic Vendor Compliance & Transactional Ledger",
-  description: "Ingest vendor evidence, extract compliance controls, monitor regional risk, and write immutable audit trails across globally distributed databases. Powered by Amazon Aurora DSQL.",
-  keywords: ["vendor compliance", "SOC2", "ISO27001", "GDPR", "HIPAA", "audit ledger", "Aurora DSQL", "AI compliance"],
+  description: "Ingest vendor evidence, extract compliance controls, monitor regional risk, and write immutable audit trails across globally distributed databases. Powered by CockroachDB.",
+  keywords: ["vendor compliance", "SOC2", "ISO27001", "GDPR", "HIPAA", "audit ledger", "CockroachDB", "AI compliance"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
